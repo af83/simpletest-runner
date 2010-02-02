@@ -1,0 +1,33 @@
+SimpleTest Runner
+-----------------
+
+Custom Runner and Reporter for SimpleTest.
+
+ Allow select test to run individually.
+
+Usage
+-----
+
+class AllTests extends SimpleTestRunner_TestSuite
+{
+    public function __construct() 
+    {
+        $this->addFile(..);
+    }
+}
+
+SimpleTest::prefer(new SimpleTestRunner_Form());
+$suites = new AllTests();
+SimpleTestRunner_CustomDisplay::$allTests = $suites->getAllTests();
+
+Copyright
+---------
+
+(c) 2010 AF83
+
+Authors
+------
+
+Luc-pascal Ceccaldi <lpceccaldi@af83.com>
+François de Metz <fdemetz@af83.com>
+
