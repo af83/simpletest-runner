@@ -80,7 +80,7 @@ EOS;
         {
             $this->makeDry();
         }
-        $test_cases = self::$allTests;
+        $test_cases = $this->sortTests(self::$allTests);
         $form = '<form action="" method="get">';
         foreach($test_cases as $suite => $tests)
         {
@@ -95,6 +95,12 @@ EOS;
         $form .= '<p><input type="submit" value="Launch tests &rarr;" name="submit"/></p>';
         $form .= '</form>';
         return $form;
+    }
+
+    protected function sortTests(array $allTests)
+    {
+        ksort($allTests);
+        return $allTests;
     }
 
 }
