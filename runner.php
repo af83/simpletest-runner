@@ -19,8 +19,9 @@
  */
 
 /**
- *
+ * @package SimpleTest-runner
  */
+
 interface SimpleTestRunner_Observer 
 {
     public function render();
