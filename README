@@ -23,11 +23,11 @@ SimpleTestRunner_CustomDisplay::$allTests = $suites->getAllTests();
 Copyright
 ---------
 
-(c) 2010 AF83
+Copyright (c) 2010 AF83
 
 Authors
 ------
 
-Luc-pascal Ceccaldi <lpceccaldi@af83.com>
+Luc-Pascal Ceccaldi <lpceccaldi@af83.com>
 François de Metz <fdemetz@af83.com>
 
