@@ -127,14 +127,13 @@ class SimpleTestRunner_CustomDisplay extends HtmlReporter
         {
             return (isset(self::$runOnlyTests[$test_case_name]) ? in_array($method, self::$runOnlyTests[$test_case_name]) : false);
         }
-        
     }
 
     public function paintHeader($test_name)
     {
         echo <<<EOS
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-        <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+        <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
         <head>
             <title>Tests</title>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -156,8 +155,8 @@ EOS;
 
     public function paintFooter($test_name)
     {
-        $colour = ($this->getFailCount() + $this->getExceptionCount() > 0 ? "red" : "green");
-        echo "<div style=\"padding: 8px; margin-top: 1em; background-color: $colour; color: white;\">";
+        $result = ($this->getFailCount() + $this->getExceptionCount() > 0 ? 'fail' : 'pass');
+        echo '<div class="result '. $result  .'">';
         echo $this->getTestCaseProgress() . "/" . $this->getTestCaseCount();
         echo " test cases complete:\n";
         echo "<strong>" . $this->getPassCount() . "</strong> passes, ";
