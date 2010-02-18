@@ -29,9 +29,14 @@ You can attach an "observer" on display.
 
 class MyObserver implements SimpleTestRunner_Observer 
 {
+    public function renderHeader()
+    {
+        echo '<script type="text/javacript" src="my.js"></script>';
+    }
+
     public function render()
     {
-        echo 
+        echo '';
     }
 }
 
@@ -41,7 +46,7 @@ http request on test. But it's optionnal.
 Support
 -------
 
-#af83@irc.freenode.net and ping francois2 or moals3 :)
+#af83@irc.freenode.net and ping francois2 or moa3 :)
 
 Copyright
 ---------
