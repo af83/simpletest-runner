@@ -24,6 +24,8 @@
 
 interface SimpleTestRunner_Observer 
 {
+    public function renderHeader();
+
     public function render();
 }
 
@@ -138,6 +140,7 @@ class SimpleTestRunner_CustomDisplay extends HtmlReporter
 
     public function paintHeader($test_name)
     {
+        $observer_headers = is_null(self::$observer) ? '' : self::$observer->renderHeader();
         echo <<<EOS
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -150,10 +153,7 @@ class SimpleTestRunner_CustomDisplay extends HtmlReporter
             .pass { background-color: green;} pre { background-color: lightgray; color: inherit; }
             .tests { width: 400px; margin-right: 5px; padding: 3px;font-size: 0.9em; float: left; background-color: #BFBFBF;}
             </style>
-            <script type="text/javascript" src="/js/prototype.js"></script>
-            <script type="text/javascript" src="/js/scriptaculous.js"></script>
-            <script type="text/javascript" src="/js/effects.js"></script>
-            <script type="text/javascript" src="/js/tests.js"></script>
+            $observer_headers
         </head>
         <body>
 EOS;
