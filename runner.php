@@ -43,14 +43,28 @@ class SimpleTestRunner_TestSuite extends TestSuite
         $tests = array();
         foreach ($this->_test_cases as $suite)
         {
-            foreach ($suite->_test_cases as $test_case)
+            $tests = array_merge($tests, $this->getTestsCase($suite));
+        }
+        return $tests;
+    } 
+
+    protected function getTestsCase($suite)
+    {
+        $tests = array();
+        foreach ($suite->_test_cases as $test_case)
+        {
+            if ($test_case instanceOf SimpleTestRunner_TestSuite)
+            {
+                $tests[$test_case->getLabel()] = $test_case->getAllTests();
+            }
+            else 
             {
                 $instance = new $test_case();
                 $tests[$test_case] = $instance->getTests();
             }
         }
         return $tests;
-    } 
+    }
 }
 
 /**
@@ -85,19 +99,48 @@ EOS;
         }
         $test_cases = $this->sortTests(self::$allTests);
         $form = '<form action="" method="get">';
-        foreach($test_cases as $suite => $tests)
-        {
-            $form .= "<p><strong>$suite</strong></p>";
-            foreach($tests as $test)
-            {
-                $checked = isset($_GET['tests_to_run'][$suite]) && in_array($test, $_GET['tests_to_run'][$suite]) ? 'checked="checked"': '';
-                $form .= "<label><input type=\"checkbox\" name=\"tests_to_run[$suite][]\" value=\"$test\" $checked />$test</label><br/>";
-            }
-            $form .= '<hr/>';
-        }
+        $form .= $this->formTestsCases($test_cases);
         $form .= '<p><input type="submit" value="Launch tests &rarr;" name="submit"/></p>';
         $form .= '</form>';
         return $form;
+    }
+
+    /**
+     * Ugly code
+     * TODO: refactor
+     */
+    protected function formTestsCases($test_cases)
+    {
+        $form = array();
+        foreach($test_cases as $label => $tests)
+        {
+            $form []= "<h2>$label</h2>";
+            foreach($tests as $label2 => $test)
+            {
+                if (is_array($test))
+                {
+                    $form []= '<div class="indent">';
+                    $form []= "<h2>$label2</h2>";
+                    foreach ($test as $test2)
+                    {
+                        $form []= $this->buildCheckbox($label2, $test2);
+                    }
+                    $form []= '</div>';
+                }
+                else
+                {
+                    $form []= $this->buildCheckbox($label, $test);
+                }
+            }
+            $form []= '<hr/>';
+        }
+        return implode("\n", $form);
+    }
+
+    protected function buildCheckbox($label, $test)
+    {
+        $checked = isset($_GET['tests_to_run'][$label]) && in_array($test, $_GET['tests_to_run'][$label]) ? 'checked="checked"': '';
+        return "<label><input type=\"checkbox\" name=\"tests_to_run[$label][]\" value=\"$test\" $checked />$test</label><br/>";
     }
 
     protected function sortTests(array $allTests)
@@ -152,6 +195,7 @@ class SimpleTestRunner_CustomDisplay extends HtmlReporter
             .fail { background-color: red;}
             .pass { background-color: green;} pre { background-color: lightgray; color: inherit; }
             .tests { width: 400px; margin-right: 5px; padding: 3px;font-size: 0.9em; float: left; background-color: #BFBFBF;}
+            .indent { padding-left: 10px; }
             </style>
             $observer_headers
         </head>
